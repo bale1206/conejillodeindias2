@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RecuperarPage } from './recuperar/recuperar.page';
+import { RegisterPage } from './register/register.page';
 
 const routes: Routes = [
   {
@@ -12,6 +14,14 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'recuperar',
+    component: RecuperarPage // Asegúrate de que este componente esté declarado en el módulo correspondiente
+  },
+  {
+    path: 'register',
+    component: RegisterPage // Asegúrate de que este componente esté declarado en el módulo correspondiente
+  },
+  {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
@@ -22,13 +32,23 @@ const routes: Routes = [
   {
     path: 'perfil',
     loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule)
+  },
+  {
+    path: 'recuperar',
+    loadChildren: () => import('./recuperar/recuperar.module').then( m => m.RecuperarPageModule)
+  },
+  {
+    path: 'error',
+    loadChildren: () => import('./error/error.module').then( m => m.ErrorPageModule)
   }
+
+
   
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }), RouterModule.forChild(routes)
   ],
   exports: [RouterModule]
 })
