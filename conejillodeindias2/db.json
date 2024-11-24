@@ -1,0 +1,40 @@
+{
+  "users": [
+    {
+      "name": "bale",
+      "email": "bale@duocuc.cl",
+      "password": "bale123",
+      "id": "1"
+    },
+    {
+      "name": "fabi",
+      "email": "fabi@duocuc.cl",
+      "password": "fabi123",
+      "id": "2"
+    },
+    {
+      "name": "helen",
+      "email": "he.mora@duocuc.cl",
+      "password": "helen123",
+      "id": "3"
+    },
+    {
+      "name": "pedro",
+      "email": "pedro@gmail.com",
+      "password": "pedro123",
+      "id": "Y_b5Tqc"
+    },
+    {
+      "name": "helen",
+      "email": "he.mora@gmail.com",
+      "password": "helen123",
+      "id": "0Q3CL_V"
+    },
+    {
+      "name": "fabi",
+      "email": "fabi@gmail.com",
+      "password": "fabi123",
+      "id": "IV12Dp2"
+    }
+  ]
+}
