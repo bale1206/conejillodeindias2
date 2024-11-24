@@ -5,8 +5,13 @@ project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/
 include ':capacitor-app'
 project(':capacitor-app').projectDir = new File('../node_modules/@capacitor/app/android')
 
+<<<<<<< HEAD
 include ':capacitor-geolocation'
 project(':capacitor-geolocation').projectDir = new File('../node_modules/@capacitor/geolocation/android')
+=======
+include ':capacitor-google-maps'
+project(':capacitor-google-maps').projectDir = new File('../node_modules/@capacitor/google-maps/android')
+>>>>>>> 6a1fe907fba012a5d2f4a08c20ba83eb296257a6
 
 include ':capacitor-haptics'
 project(':capacitor-haptics').projectDir = new File('../node_modules/@capacitor/haptics/android')

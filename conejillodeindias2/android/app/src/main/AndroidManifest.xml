@@ -8,6 +8,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
+=======
+        
+        <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="TU_API_KEY_AQUI" />
+>>>>>>> 6a1fe907fba012a5d2f4a08c20ba83eb296257a6
 
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
@@ -38,9 +45,12 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+<<<<<<< HEAD
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARS_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <user-feature android:name="android.hardware.location.gps"/>
+=======
+>>>>>>> 6a1fe907fba012a5d2f4a08c20ba83eb296257a6
 </manifest>
