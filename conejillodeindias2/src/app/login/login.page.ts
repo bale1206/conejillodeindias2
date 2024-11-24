@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../Services/authenticator.service';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,12 @@ import { Router } from '@angular/router';
 export class LoginPage implements OnInit {
   loginForm!: FormGroup;
   errorMessage: string = '';
-  constructor(private formBuilder: FormBuilder) { }
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private authService: AuthService // Inyecta AuthService
+  ) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -20,9 +26,23 @@ export class LoginPage implements OnInit {
   }
 
   onSubmit() {
-    if(this.loginForm.valid) {
-      const { email, password } = this.loginForm.value; // Obtén los valores
-      console.log('Correo:', email, 'Contraseña:', password); // Aquí agrega la lógica del login
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      this.authService.validarCredenciales(email, password).subscribe({
+        next: (response) => {
+          if (response && response.length > 0) {
+            const usuario = response[0];
+            console.log('Usuario autenticado:', usuario);
+            this.router.navigate(['/perfil'], { queryParams: { username: usuario.name } });
+          } else {
+            this.errorMessage = 'Correo o contraseña incorrectos.';
+          }
+        },
+        error: (err) => {
+          console.error('Error al iniciar sesión:', err);
+          this.errorMessage = 'Ocurrió un error al iniciar sesión.';
+        },
+      });
     } else {
       this.errorMessage = 'Por favor, completa todos los campos correctamente.';
     }

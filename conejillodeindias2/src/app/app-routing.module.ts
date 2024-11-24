@@ -40,7 +40,11 @@ const routes: Routes = [
   {
     path: 'error',
     loadChildren: () => import('./error/error.module').then( m => m.ErrorPageModule)
+  },  {
+    path: 'controller',
+    loadChildren: () => import('./Admin/controller/controller.module').then( m => m.ControllerPageModule)
   }
+
 
 
   

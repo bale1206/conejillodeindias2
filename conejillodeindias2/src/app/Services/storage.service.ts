@@ -1,36 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
-
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StorageService {
-  private bdd: Storage = new Storage();
-  private bddStatus: Promise<void>;
+  private storage: { [key: string]: any } = {}; 
 
-  constructor(private storage: Storage) {
-    this.bddStatus = this.onInit();
-   }
-   async onInit(): Promise<void> {
-    const storage = await this.storage.create();
-    this.bdd = storage;
+  set(key: string, value: any): Promise<any> {
+    return new Promise((resolve) => {
+      this.storage[key] = value;
+      resolve(value);
+    });
   }
 
-  async BDDConectada(): Promise<void> {
-    await this.bddStatus;
-  }
-  async get(key: string): Promise<any> {
-    await this.BDDConectada()
-    return this.bdd.get(key);
-  }
-
-  async set(key: string, valor: any): Promise<any> {
-    await this.BDDConectada()
-    return this.bdd.set(key, valor);
-  }
-  async remove(key: string) {
-    await this.BDDConectada()
-    this.bdd.remove(key);
+  get(key: string): Promise<any> {
+    return new Promise((resolve) => {
+      resolve(this.storage[key] || null);
+    });
   }
 }

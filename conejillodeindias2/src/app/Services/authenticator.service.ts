@@ -1,53 +1,36 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError } from 'rxjs';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class StorageService {
-  private storage: { [key: string]: any } = {}; // Simulación de almacenamiento
+export class AuthService {
+  private apiUrl = 'http://localhost:3000/users';
+  
+  constructor(private http: HttpClient) {}
 
-  set(key: string, value: any): Promise<any> {
-    return new Promise((resolve) => {
-      this.storage[key] = value;
-      resolve(value);
-    });
+  registrarUsuario(user: any): Observable<any> {
+    return this.http.post(this.apiUrl, user).pipe(
+      catchError((error) => {
+        console.error('Error al registrar usuario:', error);
+        return throwError(() => new Error('Error al registrar usuario'));
+      })
+    );
   }
 
-  get(key: string): Promise<any> {
-    return new Promise((resolve) => {
-      resolve(this.storage[key] || null);
-    });
+  recuperarContrasena(email: string): Observable<any> {
+    // Implementar lógica para recuperar contraseña si es necesario
+    throw new Error('Método no implementado.');
   }
-}
-
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthenticatorService {
-  constructor(private storage: StorageService) {}
-
-  async registrar(user: any): Promise<boolean> {
-    return this.storage.set(user.username, user).then((res) => {
-      return res != null;
-    }).catch(() => {
-      return false;
-    });
-  }
-
-  async recuperarContraseña(email: string): Promise<string> {
-    try {
-      const user = await this.storage.get(email);
-      if (user) {
-        return 'Correo enviado exitosamente a: ' + email;
-      } else {
-        throw new Error('No se encontró el usuario con ese correo');
-      }
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        throw new Error('Error al recuperar contraseña: ' + error.message);
-      } else {
-        throw new Error('Error desconocido al recuperar contraseña');
-      }
-    }
+  validarCredenciales(email: string, password: string): Observable<any> {
+    const url = `${this.apiUrl}?email=${email}&password=${password}`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        console.error('Error al validar credenciales:', error);
+        return throwError(() => new Error('Credenciales incorrectas.'));
+      })
+    );
   }
 }

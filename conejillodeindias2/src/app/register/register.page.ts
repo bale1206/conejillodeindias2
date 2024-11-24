@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../Services/authenticator.service'; // Asegúrate de que la ruta sea correcta
 
 @Component({
   selector: 'app-register',
@@ -14,7 +14,7 @@ export class RegisterPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private http: HttpClient
+    private authService: AuthService // Inyecta AuthService
   ) {
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -28,16 +28,18 @@ export class RegisterPage implements OnInit {
   onSubmit() {
     if (this.registerForm.valid) {
       const { name, email, password } = this.registerForm.value;
-      this.http.post('http://localhost:3000/users', { name, email, password })
-        .subscribe({
-          next: (response) => {
-            console.log('Usuario guardado:', response);
-            this.router.navigate(['/home']);
-          },
-          error: (err) => {
-            console.error('Error al guardar el usuario:', err);
-          },
-        });
+  
+      this.authService.registrarUsuario({ name, email, password }).subscribe({
+        next: (response) => {
+          console.log('Usuario guardado:', response);
+          alert('Usuario registrado con éxito.');
+          this.router.navigate(['/login']); 
+        },
+        error: (err) => {
+          console.error('Error al guardar el usuario:', err);
+          alert('Hubo un problema al registrar al usuario.');
+        },
+      });
     } else {
       console.log('Formulario no válido');
       alert('Por favor, complete todos los campos correctamente.');
