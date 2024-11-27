@@ -43,6 +43,10 @@ const routes: Routes = [
   },  {
     path: 'controller',
     loadChildren: () => import('./Admin/controller/controller.module').then( m => m.ControllerPageModule)
+  },
+  {
+    path: 'location',
+    loadChildren: () => import('./location/location.module').then( m => m.LocationPageModule)
   }
 
 

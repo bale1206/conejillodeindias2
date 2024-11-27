@@ -1,0 +1,42 @@
+ion-content {
+  --background: #fff; /* Set background color if needed */
+  position: relative;
+}
+
+#map {
+  position: relative; /* To allow the geocoder to overlay properly */
+  width: 100%; /* Full width of the container */
+  height: 400px; /* Set a fixed height (adjust as needed) */
+  border: 1px solid #ccc; /* Optional: Add a border for better visualization */
+  border-radius: 8px; /* Optional: Add rounded corners */
+  margin: 20px auto; /* Center the map horizontally */
+}
+
+
+#geocoder-container {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 90%;
+  max-width: 400px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.directions-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
