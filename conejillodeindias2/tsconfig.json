@@ -25,7 +25,7 @@
     ],
     "useDefineForClassFields": false,
     "types": [
-      "mapbox-gl"
+      "mapbox-gl", "jasmine", "node"
     ],
     "skipLibCheck": true,
   },

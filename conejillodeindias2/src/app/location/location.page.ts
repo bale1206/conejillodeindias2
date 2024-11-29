@@ -97,13 +97,11 @@ export class LocationPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    // Check and remove any existing Geocoder instance
     const existingGeocoder = document.getElementById('geocoder')?.firstChild;
     if (existingGeocoder) {
       document.getElementById('geocoder')!.removeChild(existingGeocoder);
     }
 
-    // Add Geocoders (Search Boxes) to the map container
     document.getElementById('from-geocoder')!.appendChild(this.fromGeocoder.onAdd(this.map));
     document.getElementById('to-geocoder')!.appendChild(this.toGeocoder.onAdd(this.map));
   }
@@ -119,15 +117,12 @@ export class LocationPage implements OnInit {
     }
   }
 
-  // Get Directions between From and To Locations
   async getDirections(from: string, to: string) {
     const accessToken = (mapboxgl as any).accessToken;
 
     try {
-      // Geocode "from" address
       const fromCoords = await this.geocodeAddress(from, accessToken);
 
-      // Geocode "to" address
       const toCoords = await this.geocodeAddress(to, accessToken);
 
       if (!fromCoords || !toCoords) {
@@ -135,7 +130,6 @@ export class LocationPage implements OnInit {
         return;
       }
 
-      // Fetch directions using the coordinates
       const directionsUrl = `https://api.mapbox.com/directions/v5/mapbox/driving/${fromCoords.join(
         ','
       )};${toCoords.join(',')}?geometries=geojson&access_token=${accessToken}`;
@@ -146,13 +140,11 @@ export class LocationPage implements OnInit {
       if (data.routes && data.routes.length > 0) {
         const route = data.routes[0].geometry.coordinates;
 
-        // Remove existing route if any
         if (this.map.getLayer('route')) {
           this.map.removeLayer('route');
           this.map.removeSource('route');
         }
 
-        // Add route to map
         this.map.addSource('route', {
           type: 'geojson',
           data: {
@@ -179,7 +171,6 @@ export class LocationPage implements OnInit {
           },
         });
 
-        // Fit the map to the route
         const bounds = route.reduce(
           (bounds: any, coord: any) => bounds.extend(coord),
           new mapboxgl.LngLatBounds(route[0], route[0])
@@ -193,7 +184,6 @@ export class LocationPage implements OnInit {
     }
   }
 
-  // Geocode an address to get coordinates
   async geocodeAddress(address: string, accessToken: string): Promise<[number, number] | null> {
     try {
       const geocodeUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
