@@ -5,6 +5,24 @@
       "email": "va.latorre@duocuc.cl",
       "password": "vale123",
       "id": 1
+    },
+    {
+      "name": "Juan",
+      "lastname": "Pérez",
+      "birthdate": "2000-01-01",
+      "licensePlate": "ABC123",
+      "email": "juan@example.com",
+      "password": "123456",
+      "id": 2
+    },
+    {
+      "id": "84b7",
+      "name": "Helen",
+      "lastname": "Mora",
+      "birthdate": "2008-02-01",
+      "licensePlate": "AB1233",
+      "email": "he.mora@duocuc.cl",
+      "password": "hola123"
     }
   ]
 }

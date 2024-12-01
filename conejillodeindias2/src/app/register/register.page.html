@@ -12,10 +12,10 @@
       </ion-card-header>
 
       <ion-card-content>
+        <!-- Nombre -->
         <ion-list>
           <ion-item>
             <ion-input
-              aria-label="name"
               formControlName="name"
               placeholder="Ingrese su nombre"
             ></ion-input>
@@ -25,10 +25,50 @@
           </div>
         </ion-list>
 
+        <!-- Apellido -->
         <ion-list>
           <ion-item>
             <ion-input
-              aria-label="email"
+              formControlName="lastname"
+              placeholder="Ingrese su apellido"
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="registerForm.get('lastname')?.invalid && (registerForm.get('lastname')?.touched || registerForm.get('lastname')?.dirty)">
+            <ion-text color="danger">El apellido es requerido.</ion-text>
+          </div>
+        </ion-list>
+
+        <!-- Cumpleaños -->
+        <ion-list>
+          <ion-item>
+            <ion-input
+              formControlName="birthdate"
+              type="date"
+              placeholder="Ingrese su fecha de nacimiento"
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="registerForm.get('birthdate')?.invalid && (registerForm.get('birthdate')?.touched || registerForm.get('birthdate')?.dirty)">
+            <ion-text color="danger">La fecha de nacimiento es requerida.</ion-text>
+          </div>
+        </ion-list>
+
+        <!-- Patente -->
+        <ion-list>
+          <ion-item>
+            <ion-input
+              formControlName="licensePlate"
+              placeholder="Ingrese su patente"
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="registerForm.get('licensePlate')?.invalid && (registerForm.get('licensePlate')?.touched || registerForm.get('licensePlate')?.dirty)">
+            <ion-text color="danger">La patente es requerida.</ion-text>
+          </div>
+        </ion-list>
+
+        <!-- Correo -->
+        <ion-list>
+          <ion-item>
+            <ion-input
               formControlName="email"
               placeholder="Ingrese su correo electrónico"
             ></ion-input>
@@ -38,11 +78,10 @@
           </div>
         </ion-list>
 
-
+        <!-- Contraseña -->
         <ion-list>
           <ion-item>
             <ion-input
-              aria-label="password"
               formControlName="password"
               type="password"
               placeholder="Ingrese su contraseña"

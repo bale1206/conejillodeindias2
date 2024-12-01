@@ -33,7 +33,7 @@ export class IniciosesionPage implements OnInit {
           if (response && response.length > 0) {
             const usuario = response[0];
             console.log('Usuario autenticado:', usuario);
-            this.router.navigate(['/perfil'], { queryParams: { username: usuario.name } });
+            this.router.navigate(['/profile'], { queryParams: { username: usuario.name } });
           } else {
             this.errorMessage = 'Correo o contraseña incorrectos.';
           }
