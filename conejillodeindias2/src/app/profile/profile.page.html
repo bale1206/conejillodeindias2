@@ -13,5 +13,12 @@
 
   <div style="text-align: center; margin-top: 50px;">
     <h1>Bienvenido/a conductor, {{ username }}!</h1>
+    <div class="directions-container">
+      <div id="from-geocoder"></div>  
+      <div id="to-geocoder"></div>    
+      <button>Get Directions</button>
+    </div>
+  
+    <div id="map"></div>
   </div>
 </ion-content>
