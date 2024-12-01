@@ -40,16 +40,27 @@ const routes: Routes = [
   {
     path: 'error',
     loadChildren: () => import('./error/error.module').then( m => m.ErrorPageModule)
-  },  {
+  },
+  {
     path: 'controller',
     loadChildren: () => import('./Admin/controller/controller.module').then( m => m.ControllerPageModule)
   },
   {
     path: 'location',
     loadChildren: () => import('./location/location.module').then( m => m.LocationPageModule)
-  }
-
-
+  },
+  {
+    path: 'registro',
+    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'iniciosesion',
+    loadChildren: () => import('./iniciosesion/iniciosesion.module').then( m => m.IniciosesionPageModule)
+  },
 
   
 ];
