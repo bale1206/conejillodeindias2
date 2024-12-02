@@ -18,6 +18,9 @@ export class RegisterPage implements OnInit {
   ) {
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
+      lastname: ['', Validators.required],
+      birthdate: ['', Validators.required],
+      licensePlate: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
@@ -27,13 +30,15 @@ export class RegisterPage implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      const { name, email, password } = this.registerForm.value;
-  
-      this.authService.registrarUsuario({ name, email, password }).subscribe({
+      const { name, lastname, birthdate, licensePlate, email, password } = this.registerForm.value;
+
+      localStorage.setItem('userName', name);
+
+      this.authService.registrarUsuario({ name, lastname, birthdate, licensePlate, email, password }).subscribe({
         next: (response) => {
           console.log('Usuario guardado:', response);
           alert('Usuario registrado con éxito.');
-          this.router.navigate(['/login']); 
+          this.router.navigate(['/iniciosesion']); // Redirige a la página de login
         },
         error: (err) => {
           console.error('Error al guardar el usuario:', err);
