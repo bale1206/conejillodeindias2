@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { throwError } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root',
@@ -21,16 +22,25 @@ export class AuthService {
   }
 
   recuperarContrasena(email: string): Observable<any> {
-    // Implementar lógica para recuperar contraseña si es necesario
     throw new Error('Método no implementado.');
   }
   validarCredenciales(email: string, password: string): Observable<any> {
     const url = `${this.apiUrl}?email=${email}&password=${password}`;
-    return this.http.get(url).pipe(
+    return this.http.get<any[]>(url).pipe(
       catchError((error) => {
         console.error('Error al validar credenciales:', error);
         return throwError(() => new Error('Credenciales incorrectas.'));
+      }),
+      map((users) => {
+        console.log('Usuarios encontrados:', users); 
+        if (users && users.length === 1) {
+          return users[0];  
+        } else {
+          throw new Error('Credenciales incorrectas');
+        }
       })
     );
   }
+  
+  
 }

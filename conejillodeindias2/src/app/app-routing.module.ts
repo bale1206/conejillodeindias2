@@ -60,7 +60,11 @@ const routes: Routes = [
   {
     path: 'iniciosesion',
     loadChildren: () => import('./iniciosesion/iniciosesion.module').then( m => m.IniciosesionPageModule)
+  },  {
+    path: 'solicitudes',
+    loadChildren: () => import('./solicitudes/solicitudes.module').then( m => m.SolicitudesPageModule)
   },
+
 
   
 ];

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',
@@ -10,7 +9,11 @@ import { ActivatedRoute } from '@angular/router';
 export class PerfilPage implements OnInit {
   username: string = '';
 
+  constructor(private route: ActivatedRoute) {}
+
   ngOnInit() {
-    this.username = localStorage.getItem('userName') || 'Usuario';  
+    this.username = localStorage.getItem('userName') || 'Usuario';
+    console.log('username:', this.username);
   }
 }
+
