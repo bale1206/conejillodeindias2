@@ -15,11 +15,11 @@ const routes: Routes = [
   },
   {
     path: 'recuperar',
-    component: RecuperarPage // Asegúrate de que este componente esté declarado en el módulo correspondiente
+    component: RecuperarPage 
   },
   {
     path: 'register',
-    component: RegisterPage // Asegúrate de que este componente esté declarado en el módulo correspondiente
+    component: RegisterPage 
   },
   {
     path: 'login',
@@ -60,8 +60,13 @@ const routes: Routes = [
   {
     path: 'iniciosesion',
     loadChildren: () => import('./iniciosesion/iniciosesion.module').then( m => m.IniciosesionPageModule)
-  },  {
+  },
+  {
     path: 'solicitudes',
+    loadChildren: () => import('./solicitudes/solicitudes.module').then( m => m.SolicitudesPageModule)
+  },
+  {
+    path: '**',
     loadChildren: () => import('./solicitudes/solicitudes.module').then( m => m.SolicitudesPageModule)
   },
 

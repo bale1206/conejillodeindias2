@@ -15,69 +15,59 @@ export class LocationPage implements OnInit {
   toGeocoder!: MapboxGeocoder;
 
   async ngOnInit() {
-    // Set the Mapbox access token
     (mapboxgl as any).accessToken = 'pk.eyJ1IjoidmEtbGF0b3JyZSIsImEiOiJjbTN4OHM2dWMxZzZ6Mmpvcm9mMXdwb3JzIn0.NM_QPXtsWhgSvRZ_NnKRxQ';
 
-    // Initialize the map
     this.map = new mapboxgl.Map({
-      container: 'map', // ID of the map container
-      style: 'mapbox://styles/mapbox/streets-v11', // Map style
-      center: [-74.006, 40.7128], // Initial center [lng, lat]
-      zoom: 12, // Initial zoom level
+      container: 'map', 
+      style: 'mapbox://styles/mapbox/streets-v11', 
+      center: [-74.006, 40.7128], 
+      zoom: 12, 
     });
 
-    // Add the main Geocoder (Search Box)
     this.geocoder = new MapboxGeocoder({
       accessToken: (mapboxgl as any).accessToken,
       mapboxgl: mapboxgl,
-      placeholder: 'Search for a place', // Custom placeholder text
-      zoom: 14, // Zoom level for search results
-      flyTo: true, // Fly to the result location
+      placeholder: 'Search for a place', 
+      zoom: 14, 
+      flyTo: true, 
     });
 
-    // Handle search result events for the main search box
     this.geocoder.on('result', (event: any) => {
       console.log('Search result:', event.result);
       const [lng, lat] = event.result.center;
       this.map.flyTo({ center: [lng, lat], zoom: 14 });
     });
 
-    // Initialize the "From" and "To" Geocoders
     this.fromGeocoder = new MapboxGeocoder({
       accessToken: (mapboxgl as any).accessToken,
       mapboxgl: mapboxgl,
-      placeholder: 'From (e.g., 1600 Pennsylvania Ave, Washington, DC)', // Custom placeholder for "From"
+      placeholder: 'From (e.g., 1600 Pennsylvania Ave, Washington, DC)', 
       zoom: 14,
-      flyTo: false, // Don't automatically fly to the "From" address
+      flyTo: false, 
     });
 
     this.toGeocoder = new MapboxGeocoder({
       accessToken: (mapboxgl as any).accessToken,
       mapboxgl: mapboxgl,
-      placeholder: 'To (e.g., Times Square, New York, NY)', // Custom placeholder for "To"
+      placeholder: 'To (e.g., Times Square, New York, NY)', 
       zoom: 14,
-      flyTo: false, // Don't automatically fly to the "To" address
+      flyTo: false, 
     });
 
-    // Handle result for "From" Geocoder
     this.fromGeocoder.on('result', (event: any) => {
       console.log('From address result:', event.result);
       const [lng, lat] = event.result.center;
-      // Store "From" location for directions
       this.map.setCenter([lng, lat]);
       new mapboxgl.Marker().setLngLat([lng, lat]).addTo(this.map);
     });
 
-    // Handle result for "To" Geocoder
     this.toGeocoder.on('result', (event: any) => {
       console.log('To address result:', event.result);
       const [lng, lat] = event.result.center;
-      // Store "To" location for directions
       this.map.setCenter([lng, lat]);
       new mapboxgl.Marker().setLngLat([lng, lat]).addTo(this.map);
     });
 
-    // Get current position and add marker to the map
     const coordinates = await this.getCurrentPosition();
     if (coordinates) {
       const { latitude, longitude } = coordinates;

@@ -7,13 +7,15 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./perfil.page.scss'],
 })
 export class PerfilPage implements OnInit {
-  username: string = '';
+  username: string = '';  
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.username = localStorage.getItem('userName') || 'Usuario';
-    console.log('username:', this.username);
+    
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.username = params['username'] || 'Usuario desconocido';  
+      console.log('username:', this.username);  
+    });
   }
 }
-

@@ -1,19 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError,map } from 'rxjs';
-import { throwError } from 'rxjs';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
+export interface Driver {
+  name: string;
+  lastname: string;
+  birthdate: string;
+  licensePlate: string;
+  email: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000'; 
+  private authenticatedUser = new BehaviorSubject<Driver | null>(null);
 
   constructor(private http: HttpClient) {}
 
   registrarUsuario(user: any): Observable<any> {
     const url = user.licensePlate ? '/choferes' : '/pasajero';  
-
     return this.http.post(`${this.apiUrl}${url}`, user).pipe(
       catchError((error) => {
         console.error('Error al registrar usuario:', error);
@@ -23,28 +31,53 @@ export class AuthService {
   }
 
   recuperarContrasena(email: string): Observable<any> {
-    throw new Error('Método no implementado.');
+    const url = `${this.apiUrl}/recuperar-contrasena`;
+    return this.http.post(url, { email }).pipe(
+      catchError((error) => {
+        console.error('Error al recuperar contraseña:', error);
+        return throwError(() => new Error('No se pudo recuperar la contraseña.'));
+      })
+    );
   }
 
   validarCredenciales(email: string, password: string, tipo: 'chofer' | 'pasajero'): Observable<any> {
     const url = `${this.apiUrl}/${tipo}?email=${email}&password=${password}`;
+    console.log(`URL generada: ${url}`); 
     return this.http.get<any[]>(url).pipe(
+      map((users) => {
+        console.log(`${tipo} encontrados:`, users); 
+        if (users && users.length === 1) {
+          return users[0];
+        } else {
+          throw new Error('Credenciales incorrectas.');
+        }
+      }),
       catchError((error) => {
         console.error(`Error al validar credenciales para ${tipo}:`, error);
         return throwError(() => new Error('Credenciales incorrectas.'));
-      }),
-      map((users) => {
-        console.log(`${tipo} encontrados:`, users);
-        if (users && users.length === 1) {
-          return users[0];  
+      })
+    );
+  }
+  
+
+  login(email: string, password: string, tipo: 'chofer' | 'pasajero'): Observable<any> {
+    return this.validarCredenciales(email, password, tipo).pipe(
+      map((user) => {
+        if (user) {
+          this.setAuthenticatedDriver(user);
+          return user;
         } else {
           throw new Error('Credenciales incorrectas.');
         }
       })
     );
   }
-  
-  
-  
-  
+
+  setAuthenticatedDriver(driver: Driver): void {
+    this.authenticatedUser.next(driver);
+  }
+
+  getAuthenticatedDriver(): Observable<Driver | null> {
+    return this.authenticatedUser.asObservable();
+  }
 }

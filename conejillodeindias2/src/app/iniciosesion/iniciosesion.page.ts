@@ -11,6 +11,9 @@ import { AuthService } from '../Services/authenticator.service';
 export class IniciosesionPage implements OnInit {
   loginForm!: FormGroup;
   errorMessage: string = '';
+  email: string = '';
+  password: string = '';
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,13 +31,15 @@ export class IniciosesionPage implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      this.authService.validarCredenciales(email, password, 'chofer').subscribe({
-        next: (response) => {
-          console.log('Chofer autenticado:', response);
-          this.router.navigate(['/profile'], { queryParams: { username: response.nombre } });
+      const userType = 'chofer';  
+  
+      this.authService.login(email, password, userType).subscribe({
+        next: (authenticatedUser) => {
+          console.log(`Chofer autenticado:`, authenticatedUser);
+          this.router.navigate(['/profile'], { queryParams: { username: authenticatedUser.name } });
         },
         error: (err) => {
-          console.error('Error al iniciar sesión como chofer:', err);
+          console.error(`Error al iniciar sesión como chofer:`, err);
           this.errorMessage = 'Correo o contraseña incorrectos.';
         },
       });
@@ -42,4 +47,5 @@ export class IniciosesionPage implements OnInit {
       this.errorMessage = 'Por favor, completa todos los campos correctamente.';
     }
   }
+  
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../Services/authenticator.service'; // Asegúrate de que la ruta sea correcta
+import { AuthService } from '../Services/authenticator.service'; 
 
 @Component({
   selector: 'app-register',
@@ -14,7 +14,7 @@ export class RegisterPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService // Inyecta AuthService
+    private authService: AuthService 
   ) {
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -38,7 +38,7 @@ export class RegisterPage implements OnInit {
         next: (response) => {
           console.log('Usuario guardado:', response);
           alert('Usuario registrado con éxito.');
-          this.router.navigate(['/login']); // Redirige a la página de login
+          this.router.navigate(['/login']); 
         },
         error: (err) => {
           console.error('Error al guardar el usuario:', err);

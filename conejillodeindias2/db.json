@@ -19,5 +19,24 @@
       "id": 2
     }
   ],
-  "pasajero": []
+  "pasajero": [
+    {
+      "name": "helen",
+      "email": "helen@gmail.com",
+      "password": "helen123",
+      "id": 1
+    },
+    {
+      "name": "fabian",
+      "email": "fab@gmail.com",
+      "password": "fabi123",
+      "id": 2
+    },
+    {
+      "name": "ana",
+      "email": "ana@gmail.com",
+      "password": "ana123",
+      "id": 3
+    }
+  ]
 }

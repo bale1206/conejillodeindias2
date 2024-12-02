@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AuthService, Driver } from '../Services/authenticator.service'; 
 
 @Component({
   selector: 'app-profile',
@@ -9,11 +9,16 @@ import { ActivatedRoute } from '@angular/router';
 export class ProfilePage implements OnInit {
   username: string = '';
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private authService: AuthService) {} 
 
   ngOnInit() {
-    this.username = localStorage.getItem('userName') || 'Usuario';
-    console.log('username:', this.username);
+    this.authService.getAuthenticatedDriver().subscribe((driver: Driver | null) => {
+      if (driver) {
+        this.username = driver.name; 
+        console.log('Chofer autenticado:', driver);
+      } else {
+        console.log('No se encontró un chofer autenticado');
+      }
+    });
   }
 }
-

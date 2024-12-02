@@ -36,7 +36,6 @@ export class SolicitudesPage implements OnInit {
   ngOnInit() { }
 
   aceptarSolicitud(id: number) {
-    // Aquí podrías actualizar el estado de la solicitud en tu base de datos o API
     const solicitud = this.solicitudes.find(s => s.id === id);
     if (solicitud) {
       solicitud.estado = 'Confirmado';
@@ -44,7 +43,6 @@ export class SolicitudesPage implements OnInit {
   }
 
   rechazarSolicitud(id: number) {
-    // Similar al aceptar, puedes actualizar el estado a "Rechazado"
     const solicitud = this.solicitudes.find(s => s.id === id);
     if (solicitud) {
       solicitud.estado = 'Rechazado';

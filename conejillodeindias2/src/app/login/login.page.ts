@@ -28,13 +28,15 @@ export class LoginPage implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      this.authService.validarCredenciales(email, password, 'pasajero').subscribe({
-        next: (response) => {
-          console.log('Pasajero autenticado:', response);
-          this.router.navigate(['/perfil'], { queryParams: { username: response.name } });
+      const userType = 'pasajero';  
+  
+      this.authService.login(email, password, userType).subscribe({
+        next: (authenticatedUser) => {
+          console.log(`Pasajero autenticado:`, authenticatedUser);
+          this.router.navigate(['/perfil'], { queryParams: { username: authenticatedUser.name } });
         },
         error: (err) => {
-          console.error('Error al iniciar sesión como pasajero:', err);
+          console.error(`Error al iniciar sesión como pasajero:`, err);
           this.errorMessage = 'Correo o contraseña incorrectos.';
         },
       });
@@ -42,4 +44,5 @@ export class LoginPage implements OnInit {
       this.errorMessage = 'Por favor, completa todos los campos correctamente.';
     }
   }
+  
 }

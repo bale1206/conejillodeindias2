@@ -17,7 +17,7 @@ describe('PerfilPage', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ id: '123' }), //nota: el 'of', por lo que entendi, se usa para simular observables que devuelvan datos de prueba
+            params: of({ id: '123' }), 
             queryParams: of({ query: 'test' }), 
           },
         },
