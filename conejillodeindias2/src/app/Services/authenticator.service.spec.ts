@@ -7,14 +7,14 @@ describe('AuthenticatorService', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule], // Provides a mock HttpClient
-      providers: [AuthService] // Register the service being tested
+      imports: [HttpClientTestingModule], 
+      providers: [AuthService] 
     }).compileComponents();
 
-    service = TestBed.inject(AuthService); // Inject the service
+    service = TestBed.inject(AuthService); 
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy(); // Ensure the service instance is created
+    expect(service).toBeTruthy(); 
   });
 });
