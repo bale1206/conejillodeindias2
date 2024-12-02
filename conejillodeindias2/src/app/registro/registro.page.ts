@@ -22,20 +22,26 @@ export class RegistroPage implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      licensePlate: ['', Validators.pattern(/^[A-Z0-9-]+$/)] 
     });
   }
 
   onSubmit() {
     if (this.registroForm.valid) {
-      const { name, email, password } = this.registroForm.value;
+      const { name, email, password, licensePlate } = this.registroForm.value;
 
-      this.authService.registrarUsuario({ name, email, password }).subscribe({
+      const userData: { name: string; email: string; password: string; licensePlate?: string } = { name, email, password };
+      
+      if (licensePlate) {
+        userData.licensePlate = licensePlate;
+      }
+
+      this.authService.registrarUsuario(userData).subscribe({
         next: (response) => {
           console.log('Usuario registrado:', response);
           alert('Usuario registrado con éxito. Ahora puedes iniciar sesión.');
 
-          
-          this.router.navigate(['/iniciosesion']);  
+          this.router.navigate(['/login']);  
         },
         error: (err) => {
           console.error('Error al registrar al usuario:', err);

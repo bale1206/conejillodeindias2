@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { Geolocation } from '@capacitor/geolocation';
+import { Capacitor } from '@capacitor/core';
+
+interface GeolocationCoordinatesWithJSON extends GeolocationCoordinates {
+  toJSON(): any;
+}
 
 @Component({
   selector: 'app-location',
@@ -68,7 +73,7 @@ export class LocationPage implements OnInit {
       new mapboxgl.Marker().setLngLat([lng, lat]).addTo(this.map);
     });
 
-    const coordinates = await this.getCurrentPosition();
+    const coordinates = await this.requestLocationPermission();
     if (coordinates) {
       const { latitude, longitude } = coordinates;
       this.map.setCenter([longitude, latitude]);
@@ -76,12 +81,25 @@ export class LocationPage implements OnInit {
     }
   }
 
-  async getCurrentPosition() {
-    try {
-      const position = await Geolocation.getCurrentPosition();
-      return position.coords;
-    } catch (error) {
-      console.error('Error getting location:', error);
+  async requestLocationPermission(): Promise<GeolocationCoordinatesWithJSON | null> {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const permission = await Geolocation.requestPermissions();
+        
+        if (permission.location === 'granted') {
+          const position = await Geolocation.getCurrentPosition();
+          const coords: GeolocationCoordinatesWithJSON = position.coords as GeolocationCoordinatesWithJSON;
+          return coords;
+        } else {
+          alert('Necesitamos acceso a tu ubicación para continuar');
+          return null;
+        }
+      } catch (error) {
+        console.error('Error al solicitar permisos de ubicación:', error);
+        return null;
+      }
+    } else {
+      console.warn('La plataforma no es nativa, no se puede solicitar permisos');
       return null;
     }
   }
@@ -91,19 +109,24 @@ export class LocationPage implements OnInit {
     if (existingGeocoder) {
       document.getElementById('geocoder')!.removeChild(existingGeocoder);
     }
-
     document.getElementById('from-geocoder')!.appendChild(this.fromGeocoder.onAdd(this.map));
     document.getElementById('to-geocoder')!.appendChild(this.toGeocoder.onAdd(this.map));
   }
-
   handleDirections() {
-    const from = (document.getElementById('from') as HTMLInputElement).value;
-    const to = (document.getElementById('to') as HTMLInputElement).value;
+    const fromElement = document.getElementById('from') as HTMLInputElement;
+    const toElement = document.getElementById('to') as HTMLInputElement;
 
-    if (from && to) {
-      this.getDirections(from, to);
+    if (fromElement && toElement) {
+      const from = fromElement.value;
+      const to = toElement.value;
+
+      if (from && to) {
+        this.getDirections(from, to);
+      } else {
+        alert('Please enter both "From" and "To" addresses!');
+      }
     } else {
-      alert('Please enter both "From" and "To" addresses!');
+      alert('One or both input fields are missing!');
     }
   }
 
@@ -112,7 +135,6 @@ export class LocationPage implements OnInit {
 
     try {
       const fromCoords = await this.geocodeAddress(from, accessToken);
-
       const toCoords = await this.geocodeAddress(to, accessToken);
 
       if (!fromCoords || !toCoords) {
@@ -194,4 +216,4 @@ export class LocationPage implements OnInit {
       return null;
     }
   }
-}
+} 

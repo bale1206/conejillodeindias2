@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../Services/authenticator.service'; 
+import { AuthService } from '../Services/authenticator.service';
 
 @Component({
   selector: 'app-register',
@@ -9,13 +9,15 @@ import { AuthService } from '../Services/authenticator.service';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  registerForm: FormGroup;
+  registerForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService 
-  ) {
+    private authService: AuthService
+  ) {}
+
+  ngOnInit() {
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
       lastname: ['', Validators.required],
@@ -26,28 +28,25 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
-
   onSubmit() {
     if (this.registerForm.valid) {
       const { name, lastname, birthdate, licensePlate, email, password } = this.registerForm.value;
 
-      localStorage.setItem('userName', name);
+      const userData = { name, lastname, birthdate, licensePlate, email, password };
 
-      this.authService.registrarUsuario({ name, lastname, birthdate, licensePlate, email, password }).subscribe({
+      this.authService.registrarUsuario(userData).subscribe({
         next: (response) => {
-          console.log('Usuario guardado:', response);
-          alert('Usuario registrado con éxito.');
-          this.router.navigate(['/login']); 
+          console.log('Usuario registrado:', response);
+          alert('Usuario registrado con éxito. Ahora puedes iniciar sesión.');
+          this.router.navigate(['/iniciosesion']);  
         },
         error: (err) => {
-          console.error('Error al guardar el usuario:', err);
-          alert('Hubo un problema al registrar al usuario.');
+          console.error('Error al registrar al usuario:', err);
+          alert('Hubo un problema al registrar al usuario. Intenta nuevamente.');
         },
       });
     } else {
-      console.log('Formulario no válido');
-      alert('Por favor, complete todos los campos correctamente.');
+      alert('Por favor, completa todos los campos correctamente.');
     }
   }
 }

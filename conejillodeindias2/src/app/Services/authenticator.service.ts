@@ -21,7 +21,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   registrarUsuario(user: any): Observable<any> {
-    const url = user.licensePlate ? '/choferes' : '/pasajero';  
+    const url = user.licensePlate ? '/chofer/register' : '/pasajero/register'; 
     return this.http.post(`${this.apiUrl}${url}`, user).pipe(
       catchError((error) => {
         console.error('Error al registrar usuario:', error);
@@ -42,10 +42,10 @@ export class AuthService {
 
   validarCredenciales(email: string, password: string, tipo: 'chofer' | 'pasajero'): Observable<any> {
     const url = `${this.apiUrl}/${tipo}?email=${email}&password=${password}`;
-    console.log(`URL generada: ${url}`); 
+    console.log(`URL generada: ${url}`);
     return this.http.get<any[]>(url).pipe(
       map((users) => {
-        console.log(`${tipo} encontrados:`, users); 
+        console.log(`${tipo} encontrados:`, users);
         if (users && users.length === 1) {
           return users[0];
         } else {
@@ -54,21 +54,24 @@ export class AuthService {
       }),
       catchError((error) => {
         console.error(`Error al validar credenciales para ${tipo}:`, error);
-        return throwError(() => new Error('Credenciales incorrectas.'));
+        return throwError(() => new Error(`Error al validar ${tipo}: ${error.message || 'No se pudo validar'}`));
       })
     );
   }
-  
 
   login(email: string, password: string, tipo: 'chofer' | 'pasajero'): Observable<any> {
     return this.validarCredenciales(email, password, tipo).pipe(
       map((user) => {
         if (user) {
-          this.setAuthenticatedDriver(user);
+          this.setAuthenticatedDriver(user);  
           return user;
         } else {
           throw new Error('Credenciales incorrectas.');
         }
+      }),
+      catchError((error) => {
+        console.error('Error al iniciar sesión:', error);
+        return throwError(() => new Error('Error al iniciar sesión.'));
       })
     );
   }
