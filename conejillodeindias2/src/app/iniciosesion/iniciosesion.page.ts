@@ -28,19 +28,14 @@ export class IniciosesionPage implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      this.authService.validarCredenciales(email, password).subscribe({
+      this.authService.validarCredenciales(email, password, 'chofer').subscribe({
         next: (response) => {
-          if (response && response.length > 0) {
-            const usuario = response[0];
-            console.log('Usuario autenticado:', usuario);
-            this.router.navigate(['/profile'], { queryParams: { username: usuario.name } });
-          } else {
-            this.errorMessage = 'Correo o contraseña incorrectos.';
-          }
+          console.log('Chofer autenticado:', response);
+          this.router.navigate(['/profile'], { queryParams: { username: response.nombre } });
         },
         error: (err) => {
-          console.error('Error al iniciar sesión:', err);
-          this.errorMessage = 'Ocurrió un error al iniciar sesión.';
+          console.error('Error al iniciar sesión como chofer:', err);
+          this.errorMessage = 'Correo o contraseña incorrectos.';
         },
       });
     } else {

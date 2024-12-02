@@ -15,7 +15,7 @@ export class LoginPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService // Inyecta AuthService
+    private authService: AuthService 
   ) {}
 
   ngOnInit() {
@@ -28,19 +28,14 @@ export class LoginPage implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      this.authService.validarCredenciales(email, password).subscribe({
+      this.authService.validarCredenciales(email, password, 'pasajero').subscribe({
         next: (response) => {
-          if (response && response.length > 0) {
-            const usuario = response[0];
-            console.log('Usuario autenticado:', usuario);
-            this.router.navigate(['/perfil'], { queryParams: { username: usuario.name } });
-          } else {
-            this.errorMessage = 'Correo o contraseña incorrectos.';
-          }
+          console.log('Pasajero autenticado:', response);
+          this.router.navigate(['/perfil'], { queryParams: { username: response.name } });
         },
         error: (err) => {
-          console.error('Error al iniciar sesión:', err);
-          this.errorMessage = 'Ocurrió un error al iniciar sesión.';
+          console.error('Error al iniciar sesión como pasajero:', err);
+          this.errorMessage = 'Correo o contraseña incorrectos.';
         },
       });
     } else {

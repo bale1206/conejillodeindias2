@@ -1,22 +1,23 @@
 {
-  "users": [
+  "chofer": [
     {
-      "name": "bale",
-      "email": "bale@duocuc.cl",
-      "password": "bale123",
-      "id": "1"
+      "name": "valentina",
+      "lastname": "latorre",
+      "birthdate": "2000-12-06",
+      "licensePlate": "12345",
+      "email": "valentina@gmail.com",
+      "password": "vale123",
+      "id": 1
     },
     {
-      "name": "fabi",
-      "email": "fabi@duocuc.cl",
-      "password": "fabi123",
-      "id": "2"
-    },
-    {
-      "name": "helen",
-      "email": "he.mora@duocuc.cl",
-      "password": "helen123",
-      "id": "3"
+      "name": "peter",
+      "lastname": "parker",
+      "birthdate": "2001-12-05",
+      "licensePlate": "4567",
+      "email": "peter@gmail.com",
+      "password": "peter123",
+      "id": 2
     }
-  ]
+  ],
+  "pasajero": []
 }

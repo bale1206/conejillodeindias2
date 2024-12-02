@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';  // Importamos Router para redirigir
-import { AuthService } from '../Services/authenticator.service';  // Importamos el servicio de autenticación
+import { Router } from '@angular/router';  
+import { AuthService } from '../Services/authenticator.service';  
 
 @Component({
   selector: 'app-registro',
@@ -13,12 +13,11 @@ export class RegistroPage implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,  // Inyectamos Router
-    private authService: AuthService  // Inyectamos AuthService para el registro
+    private router: Router,  
+    private authService: AuthService  
   ) {}
 
   ngOnInit() {
-    // Inicialización del formulario con validaciones
     this.registroForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -29,15 +28,14 @@ export class RegistroPage implements OnInit {
   onSubmit() {
     if (this.registroForm.valid) {
       const { name, email, password } = this.registroForm.value;
-      
-      // Llamada al servicio para registrar el usuario
+
       this.authService.registrarUsuario({ name, email, password }).subscribe({
         next: (response) => {
           console.log('Usuario registrado:', response);
           alert('Usuario registrado con éxito. Ahora puedes iniciar sesión.');
 
-          // Redirigir al usuario a la página de inicio de sesión después del registro
-          this.router.navigate(['/iniciosesion']);  // Asegúrate de que la ruta '/login' sea la correcta
+          
+          this.router.navigate(['/iniciosesion']);  
         },
         error: (err) => {
           console.error('Error al registrar al usuario:', err);

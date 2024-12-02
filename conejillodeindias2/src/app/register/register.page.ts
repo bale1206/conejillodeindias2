@@ -38,7 +38,7 @@ export class RegisterPage implements OnInit {
         next: (response) => {
           console.log('Usuario guardado:', response);
           alert('Usuario registrado con éxito.');
-          this.router.navigate(['/iniciosesion']); // Redirige a la página de login
+          this.router.navigate(['/login']); // Redirige a la página de login
         },
         error: (err) => {
           console.error('Error al guardar el usuario:', err);
