@@ -21,35 +21,26 @@ export class RegistroPage implements OnInit {
     this.registroForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      licensePlate: ['', Validators.pattern(/^[A-Z0-9-]+$/)] 
+      password: ['', [Validators.required, Validators.minLength(6)]], 
     });
   }
 
   onSubmit() {
     if (this.registroForm.valid) {
-      const { name, email, password, licensePlate } = this.registroForm.value;
+      const formData = this.registroForm.value;
+      console.log("Datos del formulario:", formData);
 
-      const userData: { name: string; email: string; password: string; licensePlate?: string } = { name, email, password };
-      
-      if (licensePlate) {
-        userData.licensePlate = licensePlate;
-      }
-
-      this.authService.registrarUsuario(userData).subscribe({
-        next: (response) => {
-          console.log('Usuario registrado:', response);
-          alert('Usuario registrado con éxito. Ahora puedes iniciar sesión.');
-
-          this.router.navigate(['/login']);  
+      this.authService.registrarUsuario(formData).subscribe({
+        next: () => {
+          alert('Usuario registrado con éxito.');
+          this.router.navigate(['/login']);
         },
         error: (err) => {
-          console.error('Error al registrar al usuario:', err);
-          alert('Hubo un problema al registrar al usuario. Intenta nuevamente.');
+          console.error('Error al registrar usuario:', err);
+          alert('Error al registrar usuario. Intenta nuevamente.');
         },
       });
     } else {
-      console.log('Formulario no válido');
       alert('Por favor, complete todos los campos correctamente.');
     }
   }
