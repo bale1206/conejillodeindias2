@@ -15,7 +15,7 @@ export class LoginPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService 
+    private authService: AuthService // Servicio para pasajeros
   ) {}
 
   ngOnInit() {
@@ -28,9 +28,8 @@ export class LoginPage implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      const userType = 'pasajero';  
-  
-      this.authService.login(email, password, userType).subscribe({
+
+      this.authService.loginPasajero(email, password).subscribe({
         next: (authenticatedUser) => {
           console.log(`Pasajero autenticado:`, authenticatedUser);
           this.router.navigate(['/perfil'], { queryParams: { username: authenticatedUser.name } });
@@ -44,5 +43,4 @@ export class LoginPage implements OnInit {
       this.errorMessage = 'Por favor, completa todos los campos correctamente.';
     }
   }
-  
 }

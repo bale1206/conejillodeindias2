@@ -33,7 +33,7 @@ export class IniciosesionPage implements OnInit {
       const { email, password } = this.loginForm.value;
       const userType = 'chofer';  
   
-      this.authService.login(email, password, userType).subscribe({
+      this.authService.loginChofer(email, password).subscribe({
         next: (authenticatedUser) => {
           console.log(`Chofer autenticado:`, authenticatedUser);
           this.router.navigate(['/profile'], { queryParams: { username: authenticatedUser.name } });

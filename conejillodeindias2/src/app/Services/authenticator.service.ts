@@ -40,11 +40,11 @@ export class AuthService {
     );
   }
 
-  validarCredenciales(email: string, password: string, tipo: 'chofer' | 'pasajero'): Observable<any> {
-    const url = `${this.apiUrl}/${tipo}/login`;
+  validarCredencialesChofer(email: string, password: string): Observable<any> {
+    const url = `${this.apiUrl}/chofer/login`;
     return this.http.post<any[]>(url, { email, password }).pipe(
       map((users) => {
-        console.log(`${tipo} encontrados:`, users);
+        console.log('Choferes encontrados:', users);
         if (users && users.length === 1) {
           return users[0];
         } else {
@@ -52,14 +52,32 @@ export class AuthService {
         }
       }),
       catchError((error) => {
-        console.error(`Error al validar credenciales para ${tipo}:`, error);
-        return throwError(() => new Error(`Error al validar ${tipo}: ${error.message}`));
+        console.error('Error al validar credenciales para chofer:', error);
+        return throwError(() => new Error(`Error al validar chofer: ${error.message}`));
       })
     );
   }
 
-  login(email: string, password: string, tipo: 'chofer' | 'pasajero'): Observable<any> {
-    return this.validarCredenciales(email, password, tipo).pipe(
+  validarCredencialesPasajero(email: string, password: string): Observable<any> {
+    const url = `${this.apiUrl}/pasajero/login`;
+    return this.http.post<any[]>(url, { email, password }).pipe(
+      map((users) => {
+        console.log('Pasajeros encontrados:', users);
+        if (users && users.length === 1) {
+          return users[0];
+        } else {
+          throw new Error('Credenciales incorrectas.');
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al validar credenciales para pasajero:', error);
+        return throwError(() => new Error(`Error al validar pasajero: ${error.message}`));
+      })
+    );
+  }
+
+  loginChofer(email: string, password: string): Observable<any> {
+    return this.validarCredencialesChofer(email, password).pipe(
       map((user) => {
         if (user) {
           this.setAuthenticatedDriver(user);
@@ -69,7 +87,24 @@ export class AuthService {
         }
       }),
       catchError((error) => {
-        console.error('Error al iniciar sesión:', error);
+        console.error('Error al iniciar sesión para chofer:', error);
+        return throwError(() => new Error('Error al iniciar sesión.'));
+      })
+    );
+  }
+
+  loginPasajero(email: string, password: string): Observable<any> {
+    return this.validarCredencialesPasajero(email, password).pipe(
+      map((user) => {
+        if (user) {
+          this.setAuthenticatedDriver(user);
+          return user;
+        } else {
+          throw new Error('Credenciales incorrectas.');
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al iniciar sesión para pasajero:', error);
         return throwError(() => new Error('Error al iniciar sesión.'));
       })
     );
