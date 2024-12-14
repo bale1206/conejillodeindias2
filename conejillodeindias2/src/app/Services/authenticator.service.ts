@@ -117,4 +117,8 @@ export class AuthService {
   getAuthenticatedDriver(): Observable<Driver | null> {
     return this.authenticatedUser.asObservable();
   }
+
+  isConnected(): boolean {
+    return !!this.authenticatedUser.getValue();
+  }
 }
